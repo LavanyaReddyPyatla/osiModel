@@ -104,25 +104,32 @@ public class OSIModel {
     public static void main(String[] args) {
         String message = "hello";
 
+        //Entering into PhysicalLayer
         PhysicalLayer physicalLayer = new PhysicalLayer();
         ArrayList<String> bits = physicalLayer.send(message);
 
+	//Entering into DataLayer
         DataLinkLayer dataLinkLayer = new DataLinkLayer();
         ArrayList<String> frames = dataLinkLayer.encapsulate(bits);
         ArrayList<String> framesWithParity = dataLinkLayer.addParity(frames);
-
+	
+	//Entering into NetworkLayer
         NetworkLayer networkLayer = new NetworkLayer();
         ArrayList<String> packets = networkLayer.encapsulate(framesWithParity);
 
+	//Entering into TransportLayer
         TransportLayer transportLayer = new TransportLayer();
         ArrayList<String> segments = transportLayer.encapsulate(packets);
 
+	//Entering into SessionLayer
         SessionLayer sessionLayer = new SessionLayer();
         String data = sessionLayer.send(segments);
 
+	//Entering into PresentationLayer
         PresentationLayer presentationLayer = new PresentationLayer();
         String formattedData = presentationLayer.formatData(data);
 
+	//Entering into ApplicationLayer
         ApplicationLayer applicationLayer = new ApplicationLayer();
         applicationLayer.send(formattedData);
     }
